@@ -12,15 +12,18 @@ import { ConfigModule } from '@nestjs/config';
 
 describe('UsersService', () => {
   let service: UsersService;
+  const USER_REPOSITORY_TOKEN = getRepositoryToken(User);
+  const ROLE_REPOSITORY_TOKEN = getRepositoryToken(Role);
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [ConfigModule.forRoot(), UsersModule, RolesModule],
+      imports: [ConfigModule.forRoot()],
       providers: [
         UsersService,
         RolesService,
+        FilesService,
         {
-          provide: getRepositoryToken(User),
+          provide: USER_REPOSITORY_TOKEN,
           useValue: {
             findOne: jest.fn(),
             find: jest.fn(),
@@ -29,7 +32,7 @@ describe('UsersService', () => {
           },
         },
         {
-          provide: getRepositoryToken(Role),
+          provide: ROLE_REPOSITORY_TOKEN,
           useValue: {
             findOne: jest.fn(),
             find: jest.fn(),

@@ -8,14 +8,14 @@ import { CreateRoleDto } from './dto/create-role.dto';
 export class RolesService {
   constructor(
     @InjectRepository(Role)
-    private roleRepository: Repository<Role>,
+    private rolesRepository: Repository<Role>,
   ) {}
 
   async createRole(createRoleDto: CreateRoleDto) {
-    return await this.roleRepository.save(createRoleDto);
+    return await this.rolesRepository.save(createRoleDto);
   }
 
   async getRoleByValue(value: string) {
-    return await this.roleRepository.findOne({ where: { value } });
+    return await this.rolesRepository.findOne({ where: { value } });
   }
 }
