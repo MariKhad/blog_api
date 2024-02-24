@@ -2,7 +2,7 @@
 
 This is an example of how to use [nestjs](https://github.com/nestjs/nest) with jwt and typeorm to build a basic blog API.
 
-#№ Use
+## Use
 
 - Start the postgreSql container using docker
 
