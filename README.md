@@ -62,6 +62,7 @@ I used a variety of packages to develop this example api. Here's a list of them 
 
 # Links
 
-- swagger
+## Swagger
+
 - [https://localhost:7000/api/](https://localhost:700/api/) for production
 - [https://localhost:7000/api/](https://localhost:700/api/) for development
