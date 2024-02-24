@@ -48,24 +48,6 @@ $ npm test
 
 This will run jest on all `.spec.ts` files.
 
-#### End to End testing (E2E)
-
-End to end tests can be run by using the following command
-
-```bash
-$ npm test:e2e
-```
-
-this will run jest on all `.e2e-spec.ts` files.
-
-#### Coverage
-
-Use jest to show you a coverage of your tests
-
-```bash
-$ npm test:cov
-```
-
 # Packages
 
 I used a variety of packages to develop this example api. Here's a list of them and where I got them from
