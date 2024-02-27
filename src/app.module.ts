@@ -4,16 +4,14 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { RolesModule } from './roles/roles.module';
 import { AuthModule } from './auth/auth.module';
 import { ArticlesModule } from './articles/articles.module';
-import { FilesModule } from './files/files.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import * as path from 'path';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { createTypeOrmOptions } from './connection';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtGuard } from './auth/guards/jwt.guard';
-import { AppService } from './app.service';
 
-const globalGuard = {
+export const globalGuard = {
   provide: APP_GUARD,
   useClass: JwtGuard,
 };
@@ -42,9 +40,8 @@ const globalGuard = {
     UsersModule,
     RolesModule,
     AuthModule,
-    FilesModule,
     ArticlesModule,
   ],
-  providers: [globalGuard, AppService],
+  providers: [globalGuard],
 })
 export class AppModule {}

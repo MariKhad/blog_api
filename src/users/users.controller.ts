@@ -25,7 +25,6 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @ApiOperation({ summary: 'Create a new user' })
-  @ApiResponse({ status: 201, type: User, description: 'Create a new user' })
   @UseInterceptors(FileInterceptor('image'))
   @Post()
   create(@Body() createUserDto: CreateUserDto, @UploadedFile() image: any) {
@@ -33,14 +32,12 @@ export class UsersController {
   }
 
   @ApiOperation({ summary: 'Show all users' })
-  @ApiResponse({ status: 200, type: [User], description: 'Show all users' })
   @Get()
   findAll() {
     return this.usersService.findAll();
   }
 
   @ApiOperation({ summary: 'Show user by id' })
-  @ApiResponse({ status: 200, type: [User], description: 'Show user by Id' })
   @Public()
   @Get('/:id')
   findById(@Param('id') id: string) {
@@ -48,16 +45,14 @@ export class UsersController {
   }
 
   @ApiOperation({ summary: 'Adding a role' })
-  @ApiResponse({ status: 200, description: 'Adding a role' })
   @Post('/role')
   addRole(@Body() addRoleDto: AddRoleDto) {
     return this.usersService.addRole(addRoleDto);
   }
 
   @ApiOperation({ summary: 'Ban user' })
-  @ApiResponse({ status: 200, description: 'Ban user' })
   @Post('/ban')
-  addBab(@Body() banUserDto: BanUserDto) {
+  addBan(@Body() banUserDto: BanUserDto) {
     return this.usersService.banUser(banUserDto);
   }
 

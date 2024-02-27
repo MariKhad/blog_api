@@ -9,9 +9,10 @@ async function start() {
 
   const config = new DocumentBuilder()
     .setTitle('Blog Api')
-    .setDescription('Тестовое задание для Middle NestJS разработчика')
+    .setDescription(
+      'Technologies used: Typescript, Nest.js, PostgreSQL, TypeOrm',
+    )
     .setVersion('1.0')
-    .addTag('Blog')
     .addBearerAuth()
     .addOAuth2()
     .build();

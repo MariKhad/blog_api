@@ -13,6 +13,7 @@ import { Role } from '../roles/entities/role.entity';
 import { CacheRedisService } from '../cache/cache-redis.service';
 import { CacheRedisModule } from '../cache/cache-redis.module';
 import { ConfigModule } from '@nestjs/config';
+import { SlugService } from '../slug/slug.service';
 
 @Module({
   controllers: [ArticlesController],
@@ -23,6 +24,7 @@ import { ConfigModule } from '@nestjs/config';
     UsersService,
     RolesService,
     CacheRedisService,
+    SlugService,
   ],
   imports: [
     ConfigModule.forRoot(),

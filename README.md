@@ -45,6 +45,11 @@ Unit tests can be ran by simply using the `test` script
 ```bash
 $ npm test
 ```
+### End to End testing (E2E)
+End to end tests can be run by using the following command
+```bash
+$ npm test:e2e
+```
 
 This will run jest on all `.spec.ts` files.
 

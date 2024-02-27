@@ -10,10 +10,11 @@ import {
 import { CreateArticleDto } from './dto/create-article.dto';
 import { Article } from './entities/article.entity';
 import { FilesService } from '../files/files.service';
-import { DEFAULTS } from '../../const';
-import { transliterate as tr, slugify } from 'transliteration';
+import { DEFAULTS, ERRORS } from '../../const';
+
 import { UpdateArticleDto } from './dto/update-article.dto';
 import { CacheRedisService } from '../cache/cache-redis.service';
+import { SlugService } from '../slug/slug.service';
 
 @Injectable()
 export class ArticlesService {
@@ -22,6 +23,7 @@ export class ArticlesService {
     private articleRepository: Repository<Article>,
     private readonly fileService: FilesService,
     private readonly cacheRedisService: CacheRedisService,
+    private readonly slugService: SlugService,
   ) {}
 
   async create(
@@ -38,10 +40,12 @@ export class ArticlesService {
     };
 
     if (!createArticleDto.slug) {
-      const slug = await this.getUniqueSlug(createArticleDto.title);
+      const slug = await this.slugService.getUniqueSlug(createArticleDto.title);
       createArticleDto.slug = slug;
     } else {
-      createArticleDto.slug = await this.getUniqueSlug(createArticleDto.slug);
+      createArticleDto.slug = await this.slugService.getUniqueSlug(
+        createArticleDto.slug,
+      );
     }
     const article = this.articleRepository.create({
       ...createArticleDto,
@@ -83,46 +87,21 @@ export class ArticlesService {
       relations: ['author'],
     });
     if (!article) {
-      throw new NotFoundException();
+      throw new NotFoundException(ERRORS.ARTICLE_NOT_FOUND);
     }
     return article;
   }
 
   async findBySlug(slug: string): Promise<Article | null> {
-    return await this.articleRepository.findOne({
+    const article = await this.articleRepository.findOne({
       where: {
         slug,
       },
     });
-  }
-
-  async getUniqueSlug(title: string): Promise<string> {
-    const slug = slugify(tr(title));
-    const exists = await this.findSlugs(slug);
-
-    if (!exists || exists.length === 0) {
-      return slug;
+    if (!article) {
+      throw new NotFoundException();
     }
-
-    const lastSlug = exists[exists.length - 1];
-    const numbers = lastSlug.match(/\d+/g);
-    const nextNumber = numbers
-      ? parseInt(numbers[numbers.length - 1]) + 1
-      : exists.length;
-
-    return numbers && exists.length !== 1
-      ? `${slug}${DEFAULTS.REPLACEMENT}${nextNumber}`
-      : `${slug}${DEFAULTS.REPLACEMENT}${exists.length}`;
-  }
-
-  private async findSlugs(slug: string): Promise<string[]> {
-    const articles = await this.articleRepository
-      .createQueryBuilder('articles')
-      .select('articles.slug')
-      .where('slug like :slug', { slug: `${slug}%` })
-      .getMany();
-
-    return articles.map((article) => article.slug);
+    return article;
   }
 
   private checkFilters(filters: any) {
@@ -146,7 +125,9 @@ export class ArticlesService {
     updateArticleDto: UpdateArticleDto,
   ): Promise<UpdateResult> {
     if (updateArticleDto.slug) {
-      updateArticleDto.slug = await this.getUniqueSlug(updateArticleDto.slug);
+      updateArticleDto.slug = await this.slugService.getUniqueSlug(
+        updateArticleDto.slug,
+      );
     }
     const updateResult = await this.articleRepository.update(
       id,
@@ -175,11 +156,11 @@ export class ArticlesService {
     console.log('All articles were set to cash');
   }
 
-  async getAllFromCash<T>(): Promise<T[]> {
+  async getAllFromCash(): Promise<Record<string, unknown>[]> {
     try {
       const articles = (await this.cacheRedisService.getCache(
         'articles',
-      )) as T[];
+      )) as Record<string, unknown>[];
       return articles;
     } catch (e) {
       throw new NotFoundException({ error: e.message });

@@ -1,9 +1,3 @@
-const USER_TOKEN =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhlbHAxMUB0ZXN0LmNvbSIsImlhdCI6MTcwODY5MTE0M30.Af5ZPILMeu84_5irBFw8_anK3ijMiNW-AbzyjMIwm2E';
-
-const ADMIN_TOKEN =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQHRlc3QuY29tIiwiaWF0IjoxNzA4NjkxMzc4fQ.e9pW0sJClbDopGHNjCEig7u9iVAW9hUuW__UJvsiW0s';
-
 export const ERRORS = {
   WRONG_EMAIL: 'Incorrect email',
   RECORD_FAIL: 'Fail to record file',
@@ -17,6 +11,7 @@ export const ERRORS = {
   USER_OR_ROLE_NOT_FOUND: 'User or role are not found',
   ROLE_NOT_FOUND: 'Role is not found',
   USER_NOT_FOUND: 'User is not found',
+  ARTICLE_NOT_FOUND: 'Article is not found',
   AUTHORIZATION_FAIL: 'User is not authorized',
   NO_ACCESS: 'Access denied',
   TOKEN_EXPIRED: 'Token has expired',
