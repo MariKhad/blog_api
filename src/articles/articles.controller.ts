@@ -12,6 +12,7 @@ import {
   Req,
   NotFoundException,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ArticlesService } from './articles.service';
 import { CreateArticleDto } from './dto/create-article.dto';
@@ -30,6 +31,8 @@ import { Article } from './entities/article.entity';
 import { DEFAULTS } from '../../const';
 import { CacheRedisService } from '../cache/cache-redis.service';
 import { SlugService } from '../slug/slug.service';
+import { Roles } from '../decorators/roles.decorator';
+import { RolesGuard } from '../auth/guards/roles.guard';
 
 @ApiTags('Articles')
 @Controller('articles')
@@ -50,6 +53,8 @@ export class ArticlesController {
     description: 'Create a new article',
   })
   @ApiBearerAuth()
+  @UseGuards(RolesGuard)
+  @Roles('admin')
   @Post()
   @UseInterceptors(FileInterceptor('image'))
   async create(
@@ -69,7 +74,6 @@ export class ArticlesController {
     status: 200,
     description: 'Get all articles',
   })
-  @Public()
   @Get()
   async findAll() {
     try {
@@ -189,6 +193,8 @@ export class ArticlesController {
 
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete article, that is found by id' })
+  @UseGuards(RolesGuard)
+  @Roles('admin')
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.articlesService.remove(+id);
@@ -196,6 +202,8 @@ export class ArticlesController {
 
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Update article, that is found by id' })
+  @UseGuards(RolesGuard)
+  @Roles('admin')
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateArticleDto: UpdateArticleDto) {
     return this.articlesService.update(+id, updateArticleDto);

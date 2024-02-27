@@ -13,6 +13,6 @@ export const createTypeOrmOptions = (
   entities: [__dirname + '/**/*.entity{.js, .ts}'],
   synchronize:
     process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test',
-  logging:
-    process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test',
+  logging: false,
+  //process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test',
 });
