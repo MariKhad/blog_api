@@ -30,5 +30,12 @@ services:
       - pgdata:/var/lib/postgresql/data
     restart: always
 
+  redis:
+    container_name: redis
+    image: redis:3.0
+    ports:
+      - 6379:6379
+    restart: always
+
 volumes:
   pgdata:
