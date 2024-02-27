@@ -38,7 +38,6 @@ export class UsersController {
   }
 
   @ApiOperation({ summary: 'Show user by id' })
-  @Public()
   @Get('/:id')
   findById(@Param('id') id: string) {
     return this.usersService.findById(+id);
