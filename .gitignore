@@ -1,5 +1,6 @@
 .development.env
 .production.env
+.test.env
 
 
 # compiled output
